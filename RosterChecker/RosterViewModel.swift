@@ -66,29 +66,57 @@ class RosterViewModel: ObservableObject {
 
     var canVerify: Bool { pdfURL != nil && xlsxURL != nil }
 
+    /// Find the Python script: try bundle first, then source tree, then common paths
+    func findScript() -> String? {
+        // 1. Try app bundle Resources
+        if let path = Bundle.main.path(forResource: "verify_roster", ofType: "py") {
+            return path
+        }
+        // 2. Try relative to the executable (Debug builds in DerivedData)
+        let exeDir = Bundle.main.bundleURL.deletingLastPathComponent().path
+        let candidates = [
+            "\(exeDir)/verify_roster.py",
+            "\(exeDir)/../Resources/verify_roster.py",
+        ]
+        for c in candidates {
+            if FileManager.default.fileExists(atPath: c) { return c }
+        }
+        // 3. Try absolute known paths
+        let sourcePath = "/Users/guozikang/Desktop/国富量子创新有限公司/花名册核对/花名册核对程序/RosterChecker/verify_roster.py"
+        if FileManager.default.fileExists(atPath: sourcePath) { return sourcePath }
+        return nil
+    }
+
     func verify() {
         guard let pdf = pdfURL, let xlsx = xlsxURL else { return }
         state = .running
 
+        guard let scriptPath = findScript() else {
+            DispatchQueue.main.async { self.state = .error("找不到 verify_roster.py 脚本") }
+            return
+        }
+
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
 
-            let scriptPath = Bundle.main.path(forResource: "verify_roster", ofType: "py")!
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
             process.arguments = [scriptPath, pdf.path, xlsx.path, "--json"]
             process.currentDirectoryURL = FileManager.default.temporaryDirectory
 
-            let pipe = Pipe()
-            process.standardOutput = pipe
-            process.standardError = Pipe()
+            let outPipe = Pipe()
+            let errPipe = Pipe()
+            process.standardOutput = outPipe
+            process.standardError = errPipe
 
             do {
                 try process.run()
                 process.waitUntilExit()
 
-                let data = pipe.fileHandleForReading.readDataToEndOfFile()
-                let output = String(data: data, encoding: .utf8) ?? ""
+                let outData = outPipe.fileHandleForReading.readDataToEndOfFile()
+                let errData = errPipe.fileHandleForReading.readDataToEndOfFile()
+                let output = String(data: outData, encoding: .utf8) ?? ""
+                let errMsg = String(data: errData, encoding: .utf8) ?? ""
 
                 if process.terminationStatus == 0 {
                     if let jsonData = output.data(using: .utf8),
@@ -98,28 +126,28 @@ class RosterViewModel: ObservableObject {
                             self.state = .done
                         }
                     } else {
+                        let preview = String(output.prefix(200))
                         DispatchQueue.main.async {
-                            self.state = .error("解析结果失败")
+                            self.state = .error("解析结果失败\n输出预览: \(preview)")
                         }
                     }
                 } else {
-                    let errPipe = process.standardError as! Pipe
-                    let errData = errPipe.fileHandleForReading.readDataToEndOfFile()
-                    let errMsg = String(data: errData, encoding: .utf8) ?? output
+                    let detail = errMsg.isEmpty ? output : errMsg
+                    let preview = String(detail.prefix(500))
                     DispatchQueue.main.async {
-                        self.state = .error(errMsg)
+                        self.state = .error("脚本执行失败 (exit \(process.terminationStatus))\n\(preview)")
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self.state = .error(error.localizedDescription)
+                    self.state = .error("启动失败: \(error.localizedDescription)")
                 }
             }
         }
     }
 
     func exportExcel() {
-        guard let pdf = pdfURL, let xlsx = xlsxURL else { return }
+        guard let pdf = pdfURL, let xlsx = xlsxURL, let scriptPath = findScript() else { return }
 
         let savePanel = NSSavePanel()
         savePanel.title = "导出核对结果"
@@ -129,7 +157,6 @@ class RosterViewModel: ObservableObject {
         savePanel.begin { response in
             guard response == .OK, let outputURL = savePanel.url else { return }
 
-            let scriptPath = Bundle.main.path(forResource: "verify_roster", ofType: "py")!
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
             process.arguments = [scriptPath, pdf.path, xlsx.path, "--output", outputURL.path]
@@ -147,15 +174,11 @@ class RosterViewModel: ObservableObject {
     }
 
     func selectPDF() {
-        selectFile(title: "选择 Contact List PDF", types: [.pdf]) { [weak self] in
-            self?.pdfURL = $0
-        }
+        selectFile(title: "选择 Contact List PDF", types: [.pdf]) { [weak self] in self?.pdfURL = $0 }
     }
 
     func selectXLSX() {
-        selectFile(title: "选择花名册 Excel", types: [UTType(filenameExtension: "xlsx")!]) { [weak self] in
-            self?.xlsxURL = $0
-        }
+        selectFile(title: "选择花名册 Excel", types: [UTType(filenameExtension: "xlsx")!]) { [weak self] in self?.xlsxURL = $0 }
     }
 
     private func selectFile(title: String, types: [UTType], handler: @escaping (URL?) -> Void) {
@@ -164,8 +187,6 @@ class RosterViewModel: ObservableObject {
         panel.allowedContentTypes = types
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.begin { response in
-            handler(response == .OK ? panel.url : nil)
-        }
+        panel.begin { response in handler(response == .OK ? panel.url : nil) }
     }
 }
