@@ -227,7 +227,7 @@ if __name__ == '__main__':
         errors = compare_english(roster_data, cl_data)
         if json_mode:
             print(json.dumps({
-                'summary':{'cl_count':len(cl_data),'roster_count':len(roster_data),'error_count':len(errors)},
+                'summary':{'cl_count':len(cl_data),'roster_count':len(roster_data),'error_count':len(errors),'only_roster_count':0,'only_cl_count':0},
                 'errors':errors,'only_roster':[],'only_cl':[]
             }, ensure_ascii=False, indent=2))
         else:
