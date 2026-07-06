@@ -67,7 +67,8 @@ class RosterViewModel: ObservableObject {
             guard let self = self else { return }
             let process = Process()
             process.executableURL = URL(fileURLWithPath: python)
-            process.arguments = [scriptURL.path, pdf.path, xlsx.path, "--json"] + (["--english-only"] if self.verifyMode == .englishOnly else [])
+            let extraArgs = self.verifyMode == .englishOnly ? ["--english-only"] : []
+                process.arguments = [scriptURL.path, pdf.path, xlsx.path, "--json"] + extraArgs
             process.currentDirectoryURL = pdf.deletingLastPathComponent()
             let outPipe = Pipe(); let errPipe = Pipe()
             process.standardOutput = outPipe; process.standardError = errPipe
