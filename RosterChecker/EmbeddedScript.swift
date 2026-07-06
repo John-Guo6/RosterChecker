@@ -43,10 +43,15 @@ def parse_contact_list(pdf_path):
                 for nt in name_tokens:
                     if ep.endswith(nt.lower()) and len(nt) > len(sp): sp = nt.lower()
                 en = ''
+                en_is_pinyin = False
                 if sp:
                     en = re.sub(r'[^a-zA-Z]','',ep[:-len(sp)])
-                    if en: en = en[0].upper()+en[1:].lower()
-                records[email] = {'name':' '.join(name_tokens),'direct_line':dl,'mobile':mob,'english_name':en}
+                    if en:
+                        en = en[0].upper()+en[1:].lower()
+                        # 如果英文名部分比姓氏短，大概率是拼音（如 sunqing → en=sun < sp=qing）
+                        if len(en) < len(sp):
+                            en_is_pinyin = True
+                records[email] = {'name':' '.join(name_tokens),'direct_line':dl,'mobile':mob,'english_name':en,'en_is_pinyin':en_is_pinyin}
     return records
 
 def norm_phone(p):
@@ -143,6 +148,9 @@ def compare_english(roster_data, cl_data):
     for email, ex in roster_data.items():
         if email not in cl_data: continue
         cl = cl_data[email]
+        # 如果预期英文名是拼音，且 Excel 英文名为空 → 不报错
+        if cl.get('en_is_pinyin') and not ex['english_name'].strip():
+            continue
         if ex['english_name'].lower() != cl['english_name'].lower():
             errors.append({
                 'name':ex['name'],'email':email,'dept':ex['dept'],
