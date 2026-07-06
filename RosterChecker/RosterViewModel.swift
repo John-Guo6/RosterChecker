@@ -12,6 +12,8 @@ struct ErrorItem: Codable, Identifiable {
     let dl_cl: String
     let mob_excel: String
     let mob_cl: String
+    let en_excel: String
+    let en_expected: String
 }
 
 struct RosterOnlyItem: Codable, Identifiable {

@@ -25,22 +25,52 @@ def parse_contact_list(pdf_path):
                 if not m: continue
                 email = m.group(1).lower()
                 if email in skip: continue
+
                 prefix = line[:m.start()].strip()
                 tokens = prefix.split()
+
                 phones = []
+                name_tokens = []
                 for t in tokens:
                     clean = t.replace(' ','').replace('-','').replace('+','').replace('(','').replace(')','')
-                    if re.match(r'^\d{7,15}$', clean): phones.append(t)
+                    if re.match(r'^\d{7,15}$', clean):
+                        phones.append(t)
+                    elif t != 'P':
+                        name_tokens.append(t)
+
                 dl, mob = '', ''
                 if len(phones) >= 2: dl, mob = phones[0], phones[-1]
                 elif len(phones) == 1:
                     if '-' in phones[0]: dl = phones[0]
                     else: mob = phones[0]
+
+                # 提取姓氏拼音：在所有 name_tokens 中，找出现在邮箱前缀末尾的那个
+                email_prefix = email.split('@')[0]
+                surname_pinyin = ''
+                for nt in name_tokens:
+                    nt_lower = nt.lower()
+                    if email_prefix.endswith(nt_lower):
+                        if len(nt_lower) > len(surname_pinyin):
+                            surname_pinyin = nt_lower
+
+                # 推导英文名
+                english_name = ''
+                if surname_pinyin and email_prefix.endswith(surname_pinyin):
+                    # 邮箱前缀去掉姓氏 = 英文名部分
+                    en_part = email_prefix[:-len(surname_pinyin)]
+                    # 去掉可能的多余字符（数字等）
+                    en_part = re.sub(r'[^a-zA-Z]', '', en_part)
+                    if en_part:
+                        english_name = en_part[0].upper() + en_part[1:].lower()
+
                 records[email] = {
-                    'name': ' '.join(t for t in tokens if t not in phones and t != 'P'),
-                    'direct_line': dl, 'mobile': mob
+                    'name': ' '.join(name_tokens),
+                    'direct_line': dl, 'mobile': mob,
+                    'surname_pinyin': surname_pinyin,
+                    'english_name': english_name,
                 }
     return records
+
 
 def parse_roster(xlsx_path):
     wb = openpyxl.load_workbook(xlsx_path, data_only=True)
@@ -52,8 +82,13 @@ def parse_roster(xlsx_path):
         return None
     ni = fc('姓名'); ei = fc('工作邮箱'); pi = fc('直拨电话/移动电话')
     mi = fc('手机号码'); di = fc('部门'); si = fc('人员状态')
+
     if None in (ni,ei,pi,mi,di,si):
-        raise ValueError("花名册缺少必要列")
+        raise ValueError("花名册缺少必要列（姓名/工作邮箱/直拨电话-移动电话/手机号码/部门/人员状态）")
+
+    # 英文名列：可能叫"英文名"或"别名"
+    en_name_idx = fc('英文名', '别名')
+
     records = {}
     for row in ws.iter_rows(min_row=2, values_only=True):
         if row[si] != '在职': continue
@@ -63,9 +98,11 @@ def parse_roster(xlsx_path):
             'name': (row[ni] or '').strip(),
             'direct_line': (row[pi] or '').strip(),
             'mobile': (row[mi] or '').strip(),
-            'dept': (row[di] or '').strip()
+            'dept': (row[di] or '').strip(),
+            'english_name': (row[en_name_idx] or '').strip() if en_name_idx is not None else '',
         }
     return records
+
 
 def norm_phone(p):
     p = p.replace(' ','').replace('-','').replace('+','').replace('(','').replace(')','')
@@ -78,6 +115,7 @@ def phones_match(a, b):
         if na.endswith(nb) or nb.endswith(na): return True
     return False
 
+
 def compare(roster_data, cl_data):
     errors, only_roster, only_cl = [], [], []
     for email, ex in roster_data.items():
@@ -85,19 +123,33 @@ def compare(roster_data, cl_data):
             only_roster.append(ex); continue
         cl = cl_data[email]
         has_err = False
-        err = {'name':ex['name'],'email':email,'dept':ex['dept'],
-               'dl_excel':ex['direct_line'],'dl_cl':'','mob_excel':ex['mobile'],'mob_cl':cl['mobile']}
+        err = {
+            'name':ex['name'],'email':email,'dept':ex['dept'],
+            'dl_excel':ex['direct_line'],'dl_cl':'',
+            'mob_excel':ex['mobile'],'mob_cl':cl['mobile'],
+            'en_excel':ex.get('english_name',''),'en_expected':cl['english_name'],
+        }
+        # 直拨电话
         if cl['direct_line']:
             err['dl_cl'] = cl['direct_line']
             if not phones_match(ex['direct_line'], cl['direct_line']): has_err = True
         else:
             err['dl_cl'] = cl['mobile']
             if cl['mobile'] and not phones_match(ex['direct_line'], cl['mobile']): has_err = True
+        # 手机号码
         if cl['mobile'] and not phones_match(ex['mobile'], cl['mobile']): has_err = True
+        # 英文名
+        ex_en = ex.get('english_name', '').strip()
+        cl_en = cl['english_name']
+        if ex_en.lower() != cl_en.lower():
+            has_err = True
+
         if has_err: errors.append(err)
+
     for e in set(cl_data.keys()) - set(roster_data.keys()):
         only_cl.append(cl_data[e])
     return errors, only_roster, only_cl
+
 
 def write_xlsx(errors, only_roster, only_cl, output_path):
     wb = openpyxl.Workbook()
@@ -117,11 +169,11 @@ def write_xlsx(errors, only_roster, only_cl, output_path):
                 cell.border = tb; cell.alignment = Alignment(horizontal='center')
 
     ws1 = wb.active; ws1.title = '信息不一致'
-    h1 = ['姓名','邮箱','部门','直拨电话(花名册)','直拨电话(CL)','手机(花名册)','手机(CL)']
+    h1 = ['姓名','邮箱','部门','直拨电话(花名册)','直拨电话(CL)','手机(花名册)','手机(CL)','英文名(花名册)','英文名(预期)']
     sh(ws1, h1)
     for i, e in enumerate(errors, 2):
-        for j, k in enumerate(['name','email','dept','dl_excel','dl_cl','mob_excel','mob_cl']):
-            ws1.cell(row=i, column=j+1, value=e[k])
+        for j, k in enumerate(['name','email','dept','dl_excel','dl_cl','mob_excel','mob_cl','en_excel','en_expected']):
+            ws1.cell(row=i, column=j+1, value=e.get(k,''))
     sd(ws1, len(errors)+1, len(h1))
 
     ws2 = wb.create_sheet('花名册独有(CL无)')
@@ -140,27 +192,31 @@ def write_xlsx(errors, only_roster, only_cl, output_path):
             ws3.cell(row=i, column=j+1, value=r.get(k,''))
     sd(ws3, len(only_cl)+1, len(h3))
 
-    for ws, cols in [(ws1,'ABCDEFG'),(ws2,'ABCDE'),(ws3,'ABCD')]:
+    for ws, cols in [(ws1,'ABCDEFGHI'),(ws2,'ABCDE'),(ws3,'ABCD')]:
         for c in cols: ws.column_dimensions[c].width = 22
     ws1.column_dimensions['B'].width = 36; ws3.column_dimensions['B'].width = 36
 
     wb.save(output_path)
 
-# ── 主入口 ──
+
 if __name__ == '__main__':
     json_mode = '--json' in sys.argv
-    args = [a for a in sys.argv[1:] if not a.startswith('--') or a == '--json']
-    args = [a for a in args if a != '--json']
+    args = [a for a in sys.argv[1:] if a != '--json']
 
-    if len(args) < 2:
+    output_path = None
+    remaining = []
+    i = 0
+    while i < len(args):
+        if args[i] == '--output' and i+1 < len(args):
+            output_path = args[i+1]; i += 2
+        else:
+            remaining.append(args[i]); i += 1
+
+    if len(remaining) < 2:
         print("用法: python3 verify_roster.py <contact_list.pdf> <花名册.xlsx> [--json] [--output 结果.xlsx]")
         sys.exit(1)
 
-    pdf_path, xlsx_path = args[0], args[1]
-    output_path = None
-    for i, a in enumerate(sys.argv):
-        if a == '--output' and i+1 < len(sys.argv):
-            output_path = sys.argv[i+1]
+    pdf_path, xlsx_path = remaining[0], remaining[1]
 
     cl_data = parse_contact_list(pdf_path)
     roster_data = parse_roster(xlsx_path)
