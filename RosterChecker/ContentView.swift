@@ -85,7 +85,7 @@ struct ContentView: View {
             Spacer()
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 40)).foregroundColor(.orange)
-            Text("核对失败").font(.headline)
+            Text("核对失败").font(.title2.bold()).foregroundColor(.red)
             Text(msg).font(.caption).foregroundColor(.secondary)
                 .multilineTextAlignment(.center).frame(maxWidth: 500)
             Button("重试") { vm.state = .idle; vm.result = nil }.buttonStyle(.bordered)

@@ -1,31 +1,33 @@
 // !$*UTF8*$!
 {
-    archiveVersion = 1;
-    classes = {};
-    objectVersion = 56;
-    objects = {
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
 
 /* Begin PBXBuildFile section */
 		3CA39E2FF71E4EC79E161C47 /* RosterCheckerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93B7937250B42B786C14DC9 /* RosterCheckerApp.swift */; };
-		EB83B1E86F9A4957832A9495 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E401C7D0CA04DCFA2DB7550 /* ContentView.swift */; };
-		C6510D5815A94F21AE55661E /* RosterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BDD386C1D6407FB0041F91 /* RosterViewModel.swift */; };
-		E44F9911350745F9831337FE /* verify_roster.py in Resources */ = {isa = PBXBuildFile; fileRef = 4848C2E05D7841E7BEB7741D /* verify_roster.py */; };
 		49A56416989B47FB80CBE97E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70D5FEFEC45A453D9A6ADD96 /* Assets.xcassets */; };
+		C6510D5815A94F21AE55661E /* RosterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BDD386C1D6407FB0041F91 /* RosterViewModel.swift */; };
+		CA33097A2FFB59B5004B5CCC /* EmbeddedScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3309792FFB59B5004B5CCC /* EmbeddedScript.swift */; };
+		E44F9911350745F9831337FE /* verify_roster.py in Resources */ = {isa = PBXBuildFile; fileRef = 4848C2E05D7841E7BEB7741D /* verify_roster.py */; };
+		EB83B1E86F9A4957832A9495 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E401C7D0CA04DCFA2DB7550 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F93B7937250B42B786C14DC9 /* RosterCheckerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterCheckerApp.swift; sourceTree = "<group>"; };
-		8E401C7D0CA04DCFA2DB7550 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		E3BDD386C1D6407FB0041F91 /* RosterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterViewModel.swift; sourceTree = "<group>"; };
+		3818A3C7FF984E7F9A7548DC /* 花名册核对.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "花名册核对.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A82651D55DE4AA0988EB9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4848C2E05D7841E7BEB7741D /* verify_roster.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = verify_roster.py; sourceTree = "<group>"; };
 		70D5FEFEC45A453D9A6ADD96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3A82651D55DE4AA0988EB9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EE38EB5CCDB340F9AEC7BEE8 /* Products */ = {isa = PBXGroup; children = (3818A3C7FF984E7F9A7548DC); name = Products; sourceTree = "<group>"; };
-		3818A3C7FF984E7F9A7548DC /* RosterChecker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RosterChecker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E401C7D0CA04DCFA2DB7550 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CA3309792FFB59B5004B5CCC /* EmbeddedScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedScript.swift; sourceTree = "<group>"; };
+		E3BDD386C1D6407FB0041F91 /* RosterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterViewModel.swift; sourceTree = "<group>"; };
+		F93B7937250B42B786C14DC9 /* RosterCheckerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterCheckerApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		0E813430C9E74C489ED024A1 /* = */ = {
+		0E813430C9E74C489ED024A1 = {
 			isa = PBXGroup;
 			children = (
 				2722CA6506C34515BCA48038 /* RosterChecker */,
@@ -36,6 +38,7 @@
 		2722CA6506C34515BCA48038 /* RosterChecker */ = {
 			isa = PBXGroup;
 			children = (
+				CA3309792FFB59B5004B5CCC /* EmbeddedScript.swift */,
 				F93B7937250B42B786C14DC9 /* RosterCheckerApp.swift */,
 				8E401C7D0CA04DCFA2DB7550 /* ContentView.swift */,
 				E3BDD386C1D6407FB0041F91 /* RosterViewModel.swift */,
@@ -49,7 +52,7 @@
 		9DEA722F5EC848C5881BD89F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3818A3C7FF984E7F9A7548DC /* RosterChecker.app */,
+				3818A3C7FF984E7F9A7548DC /* 花名册核对.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -64,11 +67,13 @@
 				505D196E1698478EAD3AE443 /* Sources */,
 				BFA542329CD54AE4A0AB79FE /* Resources */,
 			);
-			buildRules = ();
-			dependencies = ();
+			buildRules = (
+			);
+			dependencies = (
+			);
 			name = RosterChecker;
 			productName = RosterChecker;
-			productReference = 3818A3C7FF984E7F9A7548DC /* RosterChecker.app */;
+			productReference = 3818A3C7FF984E7F9A7548DC /* 花名册核对.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -79,13 +84,17 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2660;
 			};
 			buildConfigurationList = E9B4390DC4404A8B816B2560 /* Build configuration list for PBXProject "RosterChecker" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
-			knownRegions = (en, Base, "zh-Hans");
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
 			mainGroup = 0E813430C9E74C489ED024A1;
 			productRefGroup = 9DEA722F5EC848C5881BD89F /* Products */;
 			projectDirPath = "";
@@ -115,6 +124,7 @@
 			files = (
 				3CA39E2FF71E4EC79E161C47 /* RosterCheckerApp.swift in Sources */,
 				EB83B1E86F9A4957832A9495 /* ContentView.swift in Sources */,
+				CA33097A2FFB59B5004B5CCC /* EmbeddedScript.swift in Sources */,
 				C6510D5815A94F21AE55661E /* RosterViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,24 +137,57 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1");
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = RosterChecker/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks");
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rosterchecker.app;
 				PRODUCT_NAME = "花名册核对";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -156,22 +199,54 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = RosterChecker/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks");
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rosterchecker.app;
 				PRODUCT_NAME = "花名册核对";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -181,15 +256,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E9B4390DC4404A8B816B2560 /* Build configuration list for PBXProject "RosterChecker" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				517F66FF0D82459EA04838A4 /* Debug */,
-				C6BF9C38150D4FCD926B5FB5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		75FEAB7917A245BB9DC8DF52 /* Build configuration list for PBXNativeTarget "RosterChecker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -199,7 +265,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E9B4390DC4404A8B816B2560 /* Build configuration list for PBXProject "RosterChecker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				517F66FF0D82459EA04838A4 /* Debug */,
+				C6BF9C38150D4FCD926B5FB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
-    };
-    rootObject = 8125F43630E442B7A0F7A834 /* Project object */;
+	};
+	rootObject = 8125F43630E442B7A0F7A834 /* Project object */;
 }
