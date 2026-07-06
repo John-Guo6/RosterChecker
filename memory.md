@@ -64,3 +64,6 @@
 | 2026-06-24 | brainstorming, 编码 | 构建 RosterChecker SwiftUI macOS App（文件选择 → Process 调用 Python → 表格展示） |
 | 2026-06-28 | GitHub | 初始化 git、创建仓库、推送代码、添加 README |
 | 2026-06-28 | memory-recorder | 创建 memory.md |
+
+| 2026-06-28 | 编码 | 添加英文名核对功能：从邮箱前缀推导英文名，对照花名册「英文名」列 |
+| 2026-06-28 | memory-recorder, error-recorder | 创建 AGENTS.md 记录 SwiftUI 编译错误；更新 memory.md |
