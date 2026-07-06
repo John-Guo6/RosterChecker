@@ -27,6 +27,8 @@ struct VerifyResult: Codable {
     let summary: VerifySummary
     let errors: [ErrorItem]; let only_roster: [RosterOnlyItem]; let only_cl: [CLOnlyItem]
 }
+enum VerifyMode { case full, englishOnly }
+
 enum VerifyState: Equatable {
     case idle; case running; case done; case error(String)
 }
@@ -36,6 +38,7 @@ class RosterViewModel: ObservableObject {
     @Published var pdfURL: URL?; @Published var xlsxURL: URL?
     @Published var state: VerifyState = .idle
     @Published var result: VerifyResult?; @Published var selectedTab = 0
+    @Published var verifyMode: VerifyMode = .full
     var canVerify: Bool { pdfURL != nil && xlsxURL != nil }
 
     func findPython() -> String? {
@@ -64,7 +67,7 @@ class RosterViewModel: ObservableObject {
             guard let self = self else { return }
             let process = Process()
             process.executableURL = URL(fileURLWithPath: python)
-            process.arguments = [scriptURL.path, pdf.path, xlsx.path, "--json"]
+            process.arguments = [scriptURL.path, pdf.path, xlsx.path, "--json"] + (["--english-only"] if self.verifyMode == .englishOnly else [])
             process.currentDirectoryURL = pdf.deletingLastPathComponent()
             let outPipe = Pipe(); let errPipe = Pipe()
             process.standardOutput = outPipe; process.standardError = errPipe

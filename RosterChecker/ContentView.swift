@@ -49,6 +49,14 @@ struct ContentView: View {
     var fileSelectionView: some View {
         VStack(spacing: 24) {
             Spacer()
+            Picker("核对模式", selection: $vm.verifyMode) {
+                Text("完整核对").tag(VerifyMode.full)
+                Text("仅英文名").tag(VerifyMode.englishOnly)
+            }
+            .pickerStyle(.segmented)
+            .frame(width: 280)
+            .padding(.bottom, 8)
+
             Text("选择文件开始核对").font(.title3).foregroundColor(.secondary)
             HStack(spacing: 40) {
                 fileCard(title: "Contact List (PDF)", icon: "doc.richtext",
