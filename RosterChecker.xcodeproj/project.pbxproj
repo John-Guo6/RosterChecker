@@ -11,6 +11,7 @@
 		C6510D5815A94F21AE55661E /* RosterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BDD386C1D6407FB0041F91 /* RosterViewModel.swift */; };
 		E44F9911350745F9831337FE /* verify_roster.py in Resources */ = {isa = PBXBuildFile; fileRef = 4848C2E05D7841E7BEB7741D /* verify_roster.py */; };
 		49A56416989B47FB80CBE97E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70D5FEFEC45A453D9A6ADD96 /* Assets.xcassets */; };
+		015A35FBE0CE42E684E1DE75 /* RosterChecker.entitlements */ = {isa = PBXBuildFile; fileRef = 148F2BF9EEBB4E72B816FA03 /* RosterChecker.entitlements */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		3A82651D55DE4AA0988EB9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE38EB5CCDB340F9AEC7BEE8 /* Products */ = {isa = PBXGroup; children = (3818A3C7FF984E7F9A7548DC); name = Products; sourceTree = "<group>"; };
 		3818A3C7FF984E7F9A7548DC /* RosterChecker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RosterChecker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		148F2BF9EEBB4E72B816FA03 /* RosterChecker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RosterChecker.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -143,6 +145,7 @@
 				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks");
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				CODE_SIGN_ENTITLEMENTS = RosterChecker/RosterChecker.entitlements;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rosterchecker.app;
 				PRODUCT_NAME = "花名册核对";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -170,6 +173,7 @@
 				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks");
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				CODE_SIGN_ENTITLEMENTS = RosterChecker/RosterChecker.entitlements;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rosterchecker.app;
 				PRODUCT_NAME = "花名册核对";
 				SWIFT_COMPILATION_MODE = wholemodule;
